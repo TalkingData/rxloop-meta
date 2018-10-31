@@ -43,6 +43,7 @@ describe('Epic success', () => {
     expect(store.getState('user')).toEqual({
       name: 'wxnet',
       meta: {
+        current: '',
         a: 'pending',
         b: 'pending',
         c: 'pending',
@@ -57,6 +58,7 @@ describe('Epic success', () => {
     expect(store.getState('user')).toEqual({
       name: 'wxnet',
       meta: {
+        current: 'a',
         a: 'success',
         b: 'pending',
         c: 'pending',
@@ -71,6 +73,7 @@ describe('Epic success', () => {
     expect(store.getState('user')).toEqual({
       name: 'wxnet',
       meta: {
+        current: 'b',
         a: 'success',
         b: 'cancel',
         c: 'pending',
@@ -85,6 +88,7 @@ describe('Epic success', () => {
     expect(store.getState('user')).toEqual({
       name: 'wxnet',
       meta: {
+        current: 'c',
         a: 'success',
         b: 'cancel',
         c: 'error',

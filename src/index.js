@@ -12,7 +12,9 @@ export default function metaPlugin() {
         model.state.epic !== void 0
       ) return;
 
-      const meta = {};
+      const meta = {
+        current: '',
+      };
       Object.keys(model.epics).forEach(epic => {
         meta[epic] = 'pending';
       });
@@ -21,6 +23,7 @@ export default function metaPlugin() {
       model.reducers.epicStatus = epicStatus;
 
       function epicStatus(state, { payload: { epic, status } }) {
+        state.meta.current = epic;
         state.meta[epic] = status;
         return state;
       }
