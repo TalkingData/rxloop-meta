@@ -22,7 +22,7 @@ store.model({
 });
 
 store.stream('user').subscribe((state) => {
-  if(state.meta.login === 'success') {
+  if(state.meta.current === 'login' && state.meta.login === 'success') {
     alert('login success!');
   }
 });
