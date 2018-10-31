@@ -9,7 +9,7 @@ export default function metaPlugin() {
       if (
         typeof model.state !== 'object' ||
         !model.epics ||
-        model.state.epic !== void 0
+        model.state.meta !== void 0
       ) return;
 
       const meta = {
