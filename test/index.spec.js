@@ -40,14 +40,11 @@ describe('Epic success', () => {
   });
 
   test('Default state', () => {
-    expect(store.getState('user')).toEqual({
-      name: 'wxnet',
-      meta: {
-        current: '',
-        a: 'pending',
-        b: 'pending',
-        c: 'pending',
-      },
+    expect(store.getMeta('user').epic).toEqual({
+      current: '',
+      a: 'pending',
+      b: 'pending',
+      c: 'pending',
     });
   });
 
@@ -55,29 +52,23 @@ describe('Epic success', () => {
     store.dispatch({
       type: 'user/a',
     });
-    expect(store.getState('user')).toEqual({
-      name: 'wxnet',
-      meta: {
-        current: 'a',
-        a: 'success',
-        b: 'pending',
-        c: 'pending',
-      },
-    }); 
+    expect(store.getMeta('user').epic).toEqual({
+      current: 'a',
+      a: 'success',
+      b: 'pending',
+      c: 'pending',
+    });
   });
 
   test('The b epic status is cancel', () => {
     store.dispatch({
       type: 'user/b/cancel',
     });
-    expect(store.getState('user')).toEqual({
-      name: 'wxnet',
-      meta: {
-        current: 'b',
-        a: 'success',
-        b: 'cancel',
-        c: 'pending',
-      },
+    expect(store.getMeta('user').epic).toEqual({
+      current: 'b',
+      a: 'success',
+      b: 'cancel',
+      c: 'pending',
     }); 
   });
 
@@ -85,14 +76,11 @@ describe('Epic success', () => {
     store.dispatch({
       type: 'user/c',
     });
-    expect(store.getState('user')).toEqual({
-      name: 'wxnet',
-      meta: {
-        current: 'c',
-        a: 'success',
-        b: 'cancel',
-        c: 'error',
-      },
+    expect(store.getMeta('user').epic).toEqual({
+      current: 'c',
+      a: 'success',
+      b: 'cancel',
+      c: 'error',
     }); 
   });
 });

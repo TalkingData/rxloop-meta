@@ -5,59 +5,48 @@ export default function metaPlugin() {
     onEpicError$,
     onEpicCancel$,
    }) {
+    if ( this._meta !== void 0 ) return;
+
+    this._meta = {};
+
+    this.getMeta = getMeta;
+    
+    function getMeta(model) {
+      return model !== void 0 ? this._meta[model] : this._meta;
+    }
+
     onModelBeforeCreate$.subscribe(({ model }) => {
-      if (
-        typeof model.state !== 'object' ||
-        !model.epics ||
-        model.state.meta !== void 0
-      ) return;
+      if ( !model.epics ) return;
 
       const meta = {
-        current: '',
+        epic: {
+          current: '',
+        }
       };
+
       Object.keys(model.epics).forEach(epic => {
-        meta[epic] = 'pending';
+        meta.epic[epic] = 'pending';
       });
-
-      model.state.meta = meta;
-      model.reducers.epicStatus = epicStatus;
-
-      function epicStatus(state, { payload: { epic, status } }) {
-        state.meta.current = epic;
-        state.meta[epic] = status;
-        return state;
-      }
+      this._meta[model.name] = meta;
     });
   
     // hooks  
     onEpicEnd$.subscribe(({ model, epic }) => {
-      this.dispatch({
-        type: `${model}/epicStatus`,
-        payload: {
-          epic,
-          status: 'success'
-        },
-      });
+      const meta = this._meta[model];
+      meta.epic.current = epic;
+      meta.epic[epic] = 'success';
     });
 
     onEpicError$.subscribe(({ model, epic }) => {
-      this.dispatch({
-        type: `${model}/epicStatus`,
-        payload: {
-          epic,
-          status: 'error'
-        },
-      });
+      const meta = this._meta[model];
+      meta.epic.current = epic;
+      meta.epic[epic] = 'error';
     });
 
     onEpicCancel$.subscribe(({ model, epic }) => {
-      this.dispatch({
-        type: `${model}/epicStatus`,
-        payload: {
-          epic,
-          status: 'cancel'
-        },
-      });
+      const meta = this._meta[model];
+      meta.epic.current = epic;
+      meta.epic[epic] = 'cancel';
     });
   };
 };
