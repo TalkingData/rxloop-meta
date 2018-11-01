@@ -22,7 +22,8 @@ store.model({
 });
 
 store.stream('user').subscribe((state) => {
-  if(state.meta.current === 'login' && state.meta.login === 'success') {
+  const { current, login } = state.meta;
+  if(current === 'login' && login === 'success') {
     alert('login success!');
   }
 });
