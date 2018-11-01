@@ -1,3 +1,8 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/TalkingData/rxloop-meta/compare/v0.1.2...v0.1.3) (2018-11-01)
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/TalkingData/rxloop-meta/compare/v0.1.1...v0.1.2) (2018-10-31)
 
