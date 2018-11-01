@@ -22,7 +22,7 @@ store.model({
 });
 
 store.stream('user').subscribe((state) => {
-  const { current, login } = store.getMeta('user).epic;
+  const { current, login } = store.getMeta('user').epic;
   if(current === 'login' && login === 'success') {
     alert('login success!');
   }
