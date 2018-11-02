@@ -1,6 +1,6 @@
 {
   "name": "@rxloop/meta",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "rxloop meta plugin.",
   "scripts": {
     "lint": "echo 'lint'",
