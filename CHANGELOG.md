@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/TalkingData/rxloop-meta/compare/v0.2.1...v0.3.0) (2018-11-02)
+
+
+
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/TalkingData/rxloop-meta/compare/v0.1.2...v0.2.0) (2018-11-01)
+
+
+
 <<<<<<< HEAD
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/TalkingData/rxloop-meta/compare/v0.1.2...v0.2.0) (2018-11-01)
