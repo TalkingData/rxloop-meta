@@ -34,10 +34,10 @@ export default function contextPlugin() {
 
     onStatePatch$.subscribe(({ model, reducerAction }) => {
       const context = this.context[model];
-      if (reducerAction.__source__.reducer) {
+      if (context && reducerAction.__source__.reducer) {
         context.epic.current = '';
       }
-      if (reducerAction.__source__.epic) {
+      if (context && reducerAction.__source__.epic) {
         context.epic.current = reducerAction.__source__.epic;
       }
     });
