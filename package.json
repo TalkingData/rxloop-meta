@@ -36,10 +36,10 @@
   "homepage": "https://talkingdata.github.io/rxloop-meta",
   "peerDependencies": {
     "rxjs": "^6.0.0-0",
-    "@rxloop/core": "^1.0.0-alpha.1-0"
+    "@rxloop/core": "^1.0.0-alpha.2-0"
   },
   "devDependencies": {
-    "@rxloop/core": "^0.11.0",
+    "@rxloop/core": "^1.0.0-alpha.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.2",
     "babel-jest": "^22.4.3",

@@ -1,6 +1,6 @@
 import rxloop from '@rxloop/core';
 import meta from '../src';
-import { mapTo, tap } from "rxjs/operators";
+import { mapTo, tap, delay } from "rxjs/operators";
 
 describe('Epic success', () => {
   const store = rxloop({
@@ -25,6 +25,7 @@ describe('Epic success', () => {
       },
       b(action$) {
         return action$.pipe(
+          delay(300),
           mapTo({ type: 'info' }),
         );
       },
@@ -48,15 +49,18 @@ describe('Epic success', () => {
     });
   });
 
-  test('The a epic status is success', () => {
+  test('The a epic status is success', (done) => {
     store.dispatch({
       type: 'user/a',
     });
-    expect(store.getMeta('user').epic).toEqual({
-      current: 'a',
-      a: 'success',
-      b: 'pending',
-      c: 'pending',
+    store.stream('user').subscribe(() => {
+      expect(store.getMeta('user').epic).toEqual({
+        current: 'a',
+        a: 'success',
+        b: 'pending',
+        c: 'pending',
+      });
+      done();
     });
   });
 
@@ -69,7 +73,7 @@ describe('Epic success', () => {
       a: 'success',
       b: 'cancel',
       c: 'pending',
-    }); 
+    });
   });
 
   test('The c epic status is error', () => {

@@ -1,52 +1,68 @@
-export default function metaPlugin() {
+export default function contextPlugin() {
   return function init({
     onModelBeforeCreate$,
+    onStatePatch$,
+    onEpicStart$,
     onEpicEnd$,
     onEpicError$,
     onEpicCancel$,
    }) {
-    if ( this._meta !== void 0 ) return;
+    if ( this.context !== void 0 ) return;
 
-    this._meta = {};
-
-    this.getMeta = getMeta;
+    this.context = {};
+    this.getMeta = getContext;
+    this.getContext = getContext;
     
-    function getMeta(model) {
-      return model !== void 0 ? this._meta[model] : this._meta;
+    function getContext(model) {
+      return model !== void 0 ? this.context[model] : this.context;
     }
 
     onModelBeforeCreate$.subscribe(({ model }) => {
       if ( !model.epics ) return;
 
-      const meta = {
+      const context = {
         epic: {
           current: '',
         }
       };
 
       Object.keys(model.epics).forEach(epic => {
-        meta.epic[epic] = 'pending';
+        context.epic[epic] = 'pending';
       });
-      this._meta[model.name] = meta;
+      this.context[model.name] = context;
     });
-  
-    // hooks  
+
+    onStatePatch$.subscribe(({ model, reducerAction }) => {
+      const context = this.context[model];
+      if (reducerAction.__source__.reducer) {
+        context.epic.current = '';
+      }
+      if (reducerAction.__source__.epic) {
+        context.epic.current = reducerAction.__source__.epic;
+      }
+    });
+    
+    onEpicStart$.subscribe(({ model, epic }) => {
+      const context = this.context[model];
+      context.epic.current = epic;
+      context.epic[epic] = 'start';
+    });
+    
     onEpicEnd$.subscribe(({ model, epic }) => {
-      const meta = this._meta[model];
-      meta.epic.current = epic;
-      meta.epic[epic] = 'success';
+      const context = this.context[model];
+      context.epic[epic] = 'success';
     });
 
     onEpicError$.subscribe(({ model, epic }) => {
-      const meta = this._meta[model];
-      meta.epic.current = epic;
-      meta.epic[epic] = 'error';
+      const context = this.context[model];
+      context.epic.current = epic;
+      context.epic[epic] = 'error';
     });
 
     onEpicCancel$.subscribe(({ model, epic }) => {
-      const meta = this._meta[model];
-      meta.epic.current = epic;
-      meta.epic[epic] = 'cancel';
+      const context = this.context[model];
+      context.epic.current = epic;
+      context.epic[epic] = 'cancel';
     });
   };
 };
