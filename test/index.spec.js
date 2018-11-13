@@ -41,11 +41,15 @@ describe('Epic success', () => {
   });
 
   test('Default state', () => {
-    expect(store.getMeta('user').epic).toEqual({
-      current: '',
-      a: 'pending',
-      b: 'pending',
-      c: 'pending',
+    expect(store.context.user).toEqual({
+      source: '',
+      shared: {},
+      epic: {
+        current: '',
+        a: 'pending',
+        b: 'pending',
+        c: 'pending',
+      }
     });
   });
 
@@ -54,25 +58,33 @@ describe('Epic success', () => {
       type: 'user/a',
     });
     store.stream('user').subscribe(() => {
-      expect(store.getMeta('user').epic).toEqual({
-        current: 'a',
-        a: 'success',
-        b: 'pending',
-        c: 'pending',
+      expect(store.context.user).toEqual({
+        source: 'a',
+        shared: {},
+        epic: {
+          current: 'a',
+          a: 'success',
+          b: 'pending',
+          c: 'pending',
+        }
       });
       done();
     });
   });
 
-  test('The b epic status is cancel', () => {
+  test('The b epic status is canceled', () => {
     store.dispatch({
       type: 'user/b/cancel',
     });
-    expect(store.getMeta('user').epic).toEqual({
-      current: 'b',
-      a: 'success',
-      b: 'cancel',
-      c: 'pending',
+    expect(store.context.user).toEqual({
+      source: 'b',
+      shared: {},
+      epic: {
+        current: 'b',
+        a: 'success',
+        b: 'cancel',
+        c: 'pending',
+      }
     });
   });
 
@@ -80,11 +92,15 @@ describe('Epic success', () => {
     store.dispatch({
       type: 'user/c',
     });
-    expect(store.getMeta('user').epic).toEqual({
-      current: 'c',
-      a: 'success',
-      b: 'cancel',
-      c: 'error',
+    expect(store.context.user).toEqual({
+      source: 'c',
+      shared: {},
+      epic: {
+        current: 'c',
+        a: 'success',
+        b: 'cancel',
+        c: 'error',
+      }
     }); 
   });
 });

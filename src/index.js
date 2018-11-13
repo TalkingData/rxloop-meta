@@ -21,6 +21,8 @@ export default function contextPlugin() {
       if ( !model.epics ) return;
 
       const context = {
+        source: '',
+        shared: {},
         epic: {
           current: '',
         }
@@ -34,6 +36,9 @@ export default function contextPlugin() {
 
     onStatePatch$.subscribe(({ model, reducerAction }) => {
       const context = this.context[model];
+      if (context) {
+        context.source = reducerAction.__source__.reducer || reducerAction.__source__.epic;
+      }
       if (context && reducerAction.__source__.reducer) {
         context.epic.current = '';
       }
@@ -44,6 +49,7 @@ export default function contextPlugin() {
     
     onEpicStart$.subscribe(({ model, epic }) => {
       const context = this.context[model];
+      context.source = '';
       context.epic.current = epic;
       context.epic[epic] = 'start';
     });
@@ -55,12 +61,14 @@ export default function contextPlugin() {
 
     onEpicError$.subscribe(({ model, epic }) => {
       const context = this.context[model];
+      context.source = epic;
       context.epic.current = epic;
       context.epic[epic] = 'error';
     });
 
     onEpicCancel$.subscribe(({ model, epic }) => {
       const context = this.context[model];
+      context.source = epic;
       context.epic.current = epic;
       context.epic[epic] = 'cancel';
     });
