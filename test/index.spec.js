@@ -43,9 +43,7 @@ describe('Epic success', () => {
   test('Default state', () => {
     expect(store.context.user).toEqual({
       source: '',
-      shared: {},
       epic: {
-        current: '',
         a: 'pending',
         b: 'pending',
         c: 'pending',
@@ -60,9 +58,7 @@ describe('Epic success', () => {
     store.stream('user').subscribe(() => {
       expect(store.context.user).toEqual({
         source: 'a',
-        shared: {},
         epic: {
-          current: 'a',
           a: 'success',
           b: 'pending',
           c: 'pending',
@@ -78,9 +74,7 @@ describe('Epic success', () => {
     });
     expect(store.context.user).toEqual({
       source: 'b',
-      shared: {},
       epic: {
-        current: 'b',
         a: 'success',
         b: 'cancel',
         c: 'pending',
@@ -94,9 +88,7 @@ describe('Epic success', () => {
     });
     expect(store.context.user).toEqual({
       source: 'c',
-      shared: {},
       epic: {
-        current: 'c',
         a: 'success',
         b: 'cancel',
         c: 'error',

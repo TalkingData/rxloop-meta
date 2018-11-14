@@ -18,19 +18,17 @@ export default function contextPlugin() {
     }
 
     onModelBeforeCreate$.subscribe(({ model }) => {
-      if ( !model.epics ) return;
-
       const context = {
         source: '',
-        shared: {},
-        epic: {
-          current: '',
-        }
       };
 
-      Object.keys(model.epics).forEach(epic => {
-        context.epic[epic] = 'pending';
-      });
+      if ( model.epics ) {
+        context.epic = {};
+        Object.keys(model.epics).forEach(epic => {
+          context.epic[epic] = 'pending';
+        });
+      }
+
       this.context[model.name] = context;
     });
 
@@ -39,18 +37,11 @@ export default function contextPlugin() {
       if (context) {
         context.source = reducerAction.__source__.reducer || reducerAction.__source__.epic;
       }
-      if (context && reducerAction.__source__.reducer) {
-        context.epic.current = '';
-      }
-      if (context && reducerAction.__source__.epic) {
-        context.epic.current = reducerAction.__source__.epic;
-      }
     });
     
     onEpicStart$.subscribe(({ model, epic }) => {
       const context = this.context[model];
       context.source = '';
-      context.epic.current = epic;
       context.epic[epic] = 'start';
     });
     
@@ -62,14 +53,12 @@ export default function contextPlugin() {
     onEpicError$.subscribe(({ model, epic }) => {
       const context = this.context[model];
       context.source = epic;
-      context.epic.current = epic;
       context.epic[epic] = 'error';
     });
 
     onEpicCancel$.subscribe(({ model, epic }) => {
       const context = this.context[model];
       context.source = epic;
-      context.epic.current = epic;
       context.epic[epic] = 'cancel';
     });
   };
